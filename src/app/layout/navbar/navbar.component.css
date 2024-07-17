@@ -1,0 +1,18 @@
+.icon{
+  width: 100%;
+  height: fit-content;
+  text-align: center;
+  cursor: pointer;
+}
+
+.icon-color {
+  color: white;
+  padding: 7px;
+  border-radius: 5px;
+}
+
+.icon-active {
+  padding: 7px;
+  background-color: #525cebb7;
+  border-radius: 10px;
+}

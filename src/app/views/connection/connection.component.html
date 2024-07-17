@@ -1,0 +1,157 @@
+<div class="row m-0 h-100">
+  <div class="col-3 row m-0 p-0 scrollable" style="height: min-content">
+    <div class="p-4 pt-3 pb-3" style="border-bottom: 2px solid #3d3b40">
+      <p class="fs-5 mb-0 text-white" style="letter-spacing: 2px; font-weight: 530;">Chats</p>
+    </div>
+    <div class="p-3 pt-2 pb-2">
+      <form
+        class="d-flex"
+        #userForm="ngForm"
+        (ngSubmit)="search(userForm.value)"
+      >
+        <input
+          type="search"
+          ngModel
+          #name="ngModel"
+          name="name"
+          placeholder="search here..."
+          class="form-control p-3 pt-1 pb-1 m-0 text-white"
+          style="background-color: #3d3b40; border: 0; border-radius: 10px"
+        />
+      </form>
+    </div>
+    <div *ngFor="let chat of searchResults">
+      <div
+        class="d-flex p-2 pt-3"
+        style="border-bottom: 2px solid #3d3b40"
+        *ngIf="chat.user2Id._id == user._id"
+        routerLink="/messages/{{ chat._id }}"
+      >
+        <div class="profile">
+          <img
+            *ngIf="chat.user1Id.profile"
+            [src]="'data:image/jpg;base64,' + chat.user1Id.profile"
+            [alt]="chat.user1Id.firstName[0]"
+          />
+          <span *ngIf="!chat.user1Id.profile">{{
+            chat.user1Id.firstName[0]
+          }}</span>
+        </div>
+        <div class="m-3 mt-0 mb-0 text-white">
+          <p class="mb-1 fs-6">
+            {{ chat.user1Id.firstName + " " + chat.user1Id.lastName }}
+          </p>
+          <small style="color: lightgray">{{
+            formattedDate(chat.creationDate)
+          }}</small>
+        </div>
+      </div>
+      <div
+        class="d-flex p-2 pt-3"
+        style="border-bottom: 2px solid #3d3b40"
+        *ngIf="chat.user1Id._id == user._id"
+        routerLink="/messages/{{ chat._id }}"
+      >
+        <div class="profile">
+          <img
+            *ngIf="chat.user2Id.profile"
+            [src]="'data:image/jpg;base64,' + chat.user2Id.profile"
+            [alt]="chat.user2Id.firstName[0]"
+          />
+          <span *ngIf="!chat.user2Id.profile">{{
+            chat.user2Id.firstName[0]
+          }}</span>
+        </div>
+        <div class="m-3 mt-0 mb-0 text-white">
+          <p class="mb-1 fs-6">
+            {{ chat.user2Id.firstName + " " + chat.user2Id.lastName }}
+          </p>
+          <small style="color: lightgray">{{
+            formattedDate(chat.creationDate)
+          }}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="col-9 position-relative h-100"
+    style="
+      border-left: 2px solid rgba(192, 192, 192, 0.3);
+      background-color: #3d3b40;
+    "
+  >
+    <div class="row m-0">
+      <div class="col-9 m-auto mt-4">
+        <form
+          class="d-flex"
+          #searchForm="ngForm"
+          (ngSubmit)="Search(searchForm.value)"
+        >
+          <input
+            type="search"
+            ngModel
+            #email="ngModel"
+            name="email"
+            placeholder="search by e-mail"
+            class="form-control p-3 m-0 search"
+          />
+          <button
+            type="submit"
+            class="btn text-white"
+            style="
+              border-top-left-radius: 0;
+              border-bottom-left-radius: 0;
+              background-color: #525ceb;
+              line-height: 100%;
+            "
+          >
+            <mat-icon>search</mat-icon>
+          </button>
+        </form>
+      </div>
+      <div class="col-7 m-auto" *ngFor="let _user of users">
+        <div
+          *ngIf="_user._id != user._id"
+          class="d-flex justify-content-between p-2 mt-3"
+          style="background-color: #bfcfe733; border-bottom: 2px solid #525ceb"
+        >
+          <div class="d-flex">
+            <div class="profile z-index">
+              <img
+                *ngIf="_user.profile"
+                [src]="'data:image/jpg;base64,' + _user.profile"
+                [alt]="_user.firstName[0]"
+              />
+              <span *ngIf="!_user.profile">{{ _user.firstName[0] }}</span>
+            </div>
+            <div class="m-3 mt-0 mb-0 text-white z-index">
+              <p class="mb-1 fs-6">
+                {{ _user.firstName + " " + _user.lastName }}
+              </p>
+              <small style="color: lightgray">{{ _user.email }}</small>
+            </div>
+          </div>
+          <button
+            class="btn btn-primary z-index"
+            style="border-radius: 0"
+            (click)="createChat(_user)"
+          >
+            Connect
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="position-absolute top-50 start-50 translate-middle"
+      style="width: fit-content; opacity: 0.2; z-index: 1"
+    >
+      <img [src]="logo" style="width: 350px; height: 350px" alt="" />
+      <p
+        class="text-white fs-2 text-center"
+        style="letter-spacing: 4px; list-style-type: armenian"
+      >
+        TalkNet
+      </p>
+    </div>
+  </div>
+</div>

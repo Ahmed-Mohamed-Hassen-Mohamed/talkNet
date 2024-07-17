@@ -1,0 +1,185 @@
+<div class="position-relative h-100">
+  <div
+    class="d-flex"
+    style="
+      border-bottom: 2px solid #2b2730;
+      padding: 5px 13px 8px;
+      box-shadow: 0 2px 0px #bfcfe711;
+    "
+    *ngIf="user._id != chat.user1Id._id"
+  >
+    <div class="profile">
+      <img
+        *ngIf="chat.user1Id.profile"
+        [src]="'data:image/jpg;base64,' + chat.user1Id.profile"
+        [alt]="chat.user1Id.firstName[0]"
+      />
+      <span *ngIf="!chat.user1Id.profile">{{ chat.user1Id.firstName[0] }}</span>
+    </div>
+    <div class="m-2 mt-0 mb-0 text-white">
+      <p class="mb-0">
+        {{ chat.user1Id.firstName + " " + chat.user1Id.lastName }}
+      </p>
+      <small style="color: lightgray">{{ chat.user1Id.email }}</small>
+    </div>
+  </div>
+  <div
+    class="d-flex"
+    style="border-bottom: 2px solid #2b2730; padding: 5px 13px 8px"
+    *ngIf="user._id != chat.user2Id._id"
+  >
+    <div class="profile">
+      <img
+        *ngIf="chat.user2Id.profile"
+        [src]="'data:image/jpg;base64,' + chat.user2Id.profile"
+        [alt]="chat.user2Id.firstName[0]"
+      />
+      <span *ngIf="!chat.user2Id.profile">{{ chat.user2Id.firstName[0] }}</span>
+    </div>
+    <div class="m-2 mt-0 mb-0 text-white">
+      <p class="mb-0">
+        {{ chat.user2Id.firstName + " " + chat.user2Id.lastName }}
+      </p>
+      <small style="color: lightgray">{{ chat.user2Id.email }}</small>
+    </div>
+  </div>
+  <div class="p-3 scrollable" #chatContainer style="height: 80%">
+    <div class="mt-2 z-index" *ngFor="let message of messages">
+      <div
+        class="d-flex justify-content-start"
+        *ngIf="user._id != message.senderId._id"
+      >
+        <div class="mt-2 z-index">
+          <div
+            class="otherMessages mb-1 text-white"
+            (dblclick)="replayToMessage(message)"
+          >
+            <p
+              class="p-2 text-white"
+              style="background-color: #3d3b40; border-radius: 5px"
+              *ngIf="message.replyToId"
+            >
+              {{ message.replyToId.content }}
+            </p>
+            {{ message.content }}
+          </div>
+          <small class="mt-2" style="color: lightgray">{{
+            formattedDate(message.createdAt)
+          }}</small>
+        </div>
+      </div>
+      <div
+        class="d-flex justify-content-end"
+        *ngIf="user._id == message.senderId._id"
+      >
+        <div style="max-width: 90%">
+          <div class="d-flex justify-content-end">
+            <div
+              class="myMessages mb-1 text-white"
+              (dblclick)="replayToMessage(message)"
+            >
+              <p
+                class="p-2 text-white"
+                style="
+                  background-color: #3d3b40;
+                  border-radius: 5px;
+                  white-space: pre-wrap;
+                "
+                *ngIf="message.replyToId"
+              >
+                {{ message.replyToId.content }}
+              </p>
+              {{ message.content }}
+            </div>
+          </div>
+          <div class="mt-2 d-flex justify-content-end">
+            <small style="color: lightgray">
+              {{ formattedDate(message.createdAt) }}
+            </small>
+            <mat-icon
+              [ngStyle]="{
+                color: message.isRead ? '#525ceb' : 'white'
+              }"
+              style="
+                font-size: 18px;
+                font-weight: bolder;
+                width: fit-content;
+                height: fit-content;
+                margin-left: 5px;
+              "
+              >check</mat-icon
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="p-3 position-absolute bottom-0 start-0 w-100 z-index">
+    <div
+      *ngIf="replayMessage"
+      class="p-4 pt-2 pb-2 mb-1 text-white d-flex justify-content-between"
+      style="background-color: #525ceb; border-radius: 5px"
+    >
+      <p
+        class="mb-0 fs-6 pt-1"
+        style="
+          height: 25px;
+          overflow: hidden;
+          width: 95%;
+          white-space: pre-wrap;
+        "
+      >
+        {{ replayMessage.content }}
+      </p>
+      <mat-icon (click)="cancelReplayMessage()">cancel</mat-icon>
+    </div>
+    <form
+      class="d-flex"
+      #userForm="ngForm"
+      (ngSubmit)="createMessage(userForm.value)"
+    >
+      <textarea
+        ngModel
+        rows="1"
+        #message="ngModel"
+        required
+        name="message"
+        placeholder="type your message..."
+        class="form-control p-2 m-0 w-100 text-white scrollable"
+        style="
+          border-top-right-radius: 0px;
+          border-bottom-right-radius: 0px;
+          background-color: #2b2730;
+          border: 0;
+          resize: none;
+        "
+        [(ngModel)]="value"
+      ></textarea>
+      <button
+        type="submit"
+        class="btn"
+        style="
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+          background-color: #525ceb;
+          line-height: 100%;
+        "
+        [disabled]="userForm.invalid"
+      >
+        <mat-icon>send</mat-icon>
+      </button>
+    </form>
+  </div>
+  <div
+    class="position-absolute top-50 start-50 translate-middle"
+    style="width: fit-content; opacity: 0.1; z-index: 1"
+  >
+    <img [src]="logo" style="width: 350px; height: 350px" alt="" />
+    <p
+      class="text-white fs-2 text-center"
+      style="letter-spacing: 4px; list-style-type: armenian"
+    >
+      TalkNet
+    </p>
+  </div>
+</div>

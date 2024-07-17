@@ -1,0 +1,213 @@
+<div class="row m-0 h-100">
+  <div class="col-3 position-relative h-100">
+    <div class="profile-img m-auto mt-5">
+      <img
+        *ngIf="user.profile || image"
+        [src]="image ? image : 'data:image/jpg;base64,' + user.profile"
+        [alt]="user.firstName[0]"
+      />
+      <span *ngIf="!user.profile && !image">{{ user.firstName[0] }}</span>
+      <div class="update-img position-absolute top-0 start-0 h-100 w-100">
+        <input
+          type="file"
+          class="form-control p-2"
+          id="image"
+          (change)="handelUpload($event)"
+          formControlName="image"
+          style="display: none"
+        />
+        <label for="image" class="text-primary">
+          <mat-icon
+            class="position-absolute top-50 start-50 translate-middle fs-3 text-white"
+            style="height: fit-content; width: fit-content"
+            >image</mat-icon
+          >
+        </label>
+      </div>
+    </div>
+    <div class="mt-5">
+      <p class="mb-4 fs-3 text-white text-center">
+        {{ user.firstName + " " + user.lastName }}
+      </p>
+      <p class="fs-6 text-white text-center" style="color: silver">
+        {{ user.email }}
+      </p>
+    </div>
+    <p
+      class="position-absolute bottom-0 w-100 text-center pb-3"
+      style="color: silver"
+    >
+      My joining date <br />
+      {{ user.registrationDate.slice(0, 10) }}
+    </p>
+  </div>
+  <div
+    class="col-9 row m-0 position-relative h-100 p-4 pt-0 pb-0"
+    style="
+      border-left: 2px solid rgba(192, 192, 192, 0.3);
+      background-color: #3d3b40;
+    "
+  >
+    <form
+      class="col-6 position-absolute top-50 start-50 translate-middle"
+      #userForm="ngForm"
+      (ngSubmit)="updateInfo(userForm.value)"
+    >
+      <div class="row m-0">
+        <span
+          class="col-sm-12 mb-5 fs-3 p-2"
+          style="letter-spacing: 1.5px; line-height: 130%; color: #bfcfe7"
+          >Update Info</span
+        >
+        <div class="mb-3 col-sm-6">
+          <input
+            type="text"
+            class="form-control p-2 text-white fs-6"
+            placeholder="Firstname"
+            id="firstName"
+            ngModel
+            #firstName="ngModel"
+            required
+            minlength="3"
+            name="firstName"
+            [(ngModel)]="user.firstName"
+          />
+          <div *ngIf="firstName.invalid && firstName.touched">
+            <p class="alert mb-0 p-1" *ngIf="firstName.errors?.['required']">
+              Firstname is required
+            </p>
+            <p class="alert mb-0 p-1" *ngIf="firstName.errors?.['minlength']">
+              Firstname minlength is
+              {{firstName.errors?.['minlength'].requiredLength}}, but You have
+              entered {{firstName.errors?.['minlength'].actualLength}}
+            </p>
+          </div>
+        </div>
+        <div class="mb-4 col-sm-6">
+          <input
+            type="text"
+            class="form-control p-2 text-white fs-6"
+            placeholder="Lastname"
+            id="lastName"
+            ngModel
+            #lastName="ngModel"
+            required
+            minlength="3"
+            name="lastName"
+            [(ngModel)]="user.lastName"
+          />
+          <div *ngIf="lastName.invalid && lastName.touched">
+            <p class="alert mb-0 p-1" *ngIf="lastName.errors?.['required']">
+              Lastname is required
+            </p>
+            <p class="alert mb-0 p-1" *ngIf="lastName.errors?.['minlength']">
+              Lastname minlength is
+              {{lastName.errors?.['minlength'].requiredLength}}, but You have
+              entered {{lastName.errors?.['minlength'].actualLength}}
+            </p>
+          </div>
+        </div>
+        <div class="mb-3 col-sm-12">
+          <input
+            type="text"
+            class="form-control p-2 text-white fs-6"
+            placeholder="Phone"
+            id="phone"
+            ngModel
+            #phone="ngModel"
+            minlength="11"
+            name="phone"
+            [(ngModel)]="user.phone"
+          />
+          <div *ngIf="phone.invalid && phone.touched">
+            <p class="alert mb-0 p-1" *ngIf="phone.errors?.['minlength']">
+              Phone minlength is
+              {{phone.errors?.['minlength'].requiredLength}}, but You have
+              entered {{phone.errors?.['minlength'].actualLength}}
+            </p>
+          </div>
+        </div>
+        <div class="mb-4 col-sm-12">
+          <select
+            class="form-control p-2 text-white"
+            placeholder="Gender"
+            id="gender"
+            ngModel
+            #gender="ngModel"
+            required
+            name="gender"
+            [(ngModel)]="user.gender"
+            style="background-color: #3d3b40"
+          >
+            <option style="border-radius: 0" selected value="">Gender</option>
+            <option style="border-radius: 0" value="male">Male</option>
+            <option style="border-radius: 0" value="female">Female</option>
+          </select>
+          <div *ngIf="gender.invalid && gender.touched">
+            <p class="alert mb-0 p-1" *ngIf="gender.errors?.['required']">
+              Gender is required
+            </p>
+          </div>
+        </div>
+        <div class="mb-4 col-sm-12">
+          <input
+            type="date"
+            class="form-control p-2 text-white"
+            id="birthDate"
+            ngModel
+            #birthDate="ngModel"
+            required
+            name="birthDate"
+            [(ngModel)]="defaultDate"
+          />
+          <div *ngIf="birthDate.invalid && birthDate.touched">
+            <p class="alert mb-0 p-1" *ngIf="birthDate.errors?.['required']">
+              BirthDate is required
+            </p>
+          </div>
+        </div>
+        <!-- <div class="mb-4 p-0">
+          <input
+            type="email"
+            class="form-control p-2 text-white fs-6"
+            placeholder="Email"
+            id="email"
+            ngModel
+            #email="ngModel"
+            required
+            email
+            name="email"
+            [(ngModel)]="user.email"
+          />
+          <div *ngIf="email.invalid && email.touched">
+            <p class="alert mb-0 p-1" *ngIf="email.errors?.['required']">
+              Email is required
+            </p>
+            <p class="alert mb-0 p-1" *ngIf="email.errors?.['email']">
+              Please enter valid email
+            </p>
+          </div>
+        </div> -->
+      </div>
+      <button
+        type="submit"
+        class="btn text-white m-3 p-3 pt-2 pb-2 mb-4"
+        style="
+          border-radius: 5px;
+          border: 0;
+          background-color: #525ceb;
+          letter-spacing: 1px;
+        "
+      >
+        save change
+      </button>
+      <p
+        class="alert fs-6 text-white text-center"
+        style="border: 2px solid #525ceb; color: #bfcfe7"
+        *ngIf="showMessage"
+      >
+        Save successfully
+      </p>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+<div class="row m-0 position-relative h-100">
+  <form
+    class="col-5 p-5 card position-absolute top-50 start-50 translate-middle"
+    [formGroup]="userForm"
+    (ngSubmit)="onSubmit(userForm.value)"
+    style="background-color: #3d3b40"
+  >
+    <span
+      class="m-4 mt-0 fs-3"
+      style="letter-spacing: 1.5px; line-height: 130%; color: #bfcfe7"
+      >Welcome back. <br />
+      Sign in to your account</span
+    >
+    <div class="m-4 mt-2 mb-0">
+      <input
+        type="email"
+        class="form-control p-2 text-white fs-6"
+        placeholder="Email"
+        id="email"
+        formControlName="email"
+        autocomplete="off"
+      />
+      <div class="mb-3 mt-3 position-relative">
+        <input
+          [type]="hide ? 'password' : 'text'"
+          class="form-control p-2 text-white fs-6"
+          placeholder="Password"
+          id="password"
+          formControlName="password"
+        />
+        <p
+          class="position-absolute top-0 end-0 m-2 mb-0 pb-0"
+          style="
+            background-color: transparent;
+            border: 0;
+            border-radius: 40%;
+            color: #3d3b40;
+          "
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </p>
+      </div>
+      <p class="alert text-white" *ngIf="invalidLogin">
+        Please check email or password
+      </p>
+      <button
+        type="submit"
+        class="btn text-white p-3 pt-2 pb-2"
+        style="
+          border: 0;
+          background-color: #525ceb;
+          letter-spacing: 1px;
+        "
+        [disabled]="userForm.invalid"
+      >
+        Sign in
+      </button>
+      <div class="d-flex justify-content-end">
+        <a style="cursor: pointer !important" routerLink="/resetPassword"
+          >Forgot your password?</a
+        >
+      </div>
+      <p class="mt-5 text-center text-white" style="list-style: 1px">
+        Don't have an account ? <a app-sign-up routerLink="/signup">Sign up</a>
+      </p>
+    </div>
+  </form>
+</div>

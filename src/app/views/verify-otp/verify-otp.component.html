@@ -1,0 +1,85 @@
+<div class="row m-0 text-white position-relative h-100">
+  <form
+    class="col-4 card p-5 position-absolute top-50 start-50 translate-middle"
+    #userForm="ngForm"
+    (ngSubmit)="verifyOTP(userForm.value)"
+    style="background-color: #3d3b40"
+  >
+    <p class="fs-4 mb-3 pb-4 text-white">Please enter OTP</p>
+    <div class="d-flex justify-content-between">
+      <input
+        ngModel
+        #code0="ngModel"
+        type="number"
+        class="code"
+        placeholder="0"
+        min="0"
+        max="9"
+        required
+        name="code0"
+        (keydown)="onKeyDown($event, 0)"
+      />
+      <input
+        ngModel
+        #code1="ngModel"
+        type="number"
+        class="code"
+        placeholder="0"
+        min="0"
+        max="9"
+        required
+        name="code1"
+        (keydown)="onKeyDown($event, 1)"
+      />
+      <input
+        ngModel
+        #code2="ngModel"
+        type="number"
+        class="code"
+        placeholder="0"
+        min="0"
+        max="9"
+        required
+        name="code2"
+        (keydown)="onKeyDown($event, 2)"
+      />
+      <input
+        ngModel
+        #code3="ngModel"
+        type="number"
+        class="code"
+        placeholder="0"
+        min="0"
+        max="9"
+        required
+        name="code3"
+        (keydown)="onKeyDown($event, 3)"
+      />
+    </div>
+    <p
+      class="text-center m-4 p-3"
+      style="
+        text-decoration: underline;
+        color: #525ceb;
+        letter-spacing: 2px;
+        cursor: pointer;
+      "
+      (click)="sendEmail()"
+    >
+      Resend OTP
+    </p>
+    <button
+      type="submit"
+      class="btn pt-2 pb-2 w-100 text-white"
+      style="
+        border-radius: 0px;
+        border: 0;
+        background-color: #525ceb;
+        letter-spacing: 1px;
+      "
+      [disabled]="userForm.invalid"
+    >
+      Confirm
+    </button>
+  </form>
+</div>
